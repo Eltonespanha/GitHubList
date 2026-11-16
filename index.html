@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Central de Apps | Elton Ferreira</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #090d16;
+      --surface-color: rgba(17, 25, 40, 0.75);
+      --surface-hover: rgba(30, 41, 59, 0.9);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(56, 189, 248, 0.45);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent: #38bdf8;
+      --accent-secondary: #818cf8;
+      --success: #10b981;
+      --card-radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(at 15% 15%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+        radial-gradient(at 85% 80%, rgba(129, 140, 248, 0.12) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem;
+      flex: 1;
+    }
+
+    /* Header & Profile */
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    @media (min-width: 900px) {
+      header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .profile-box {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: #1e293b;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+      flex-shrink: 0;
+    }
+
+    .title-area h1 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-area p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Switch User Box */
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .user-switcher {
+      display: flex;
+      align-items: center;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.25rem 0.35rem 0.25rem 0.75rem;
+      transition: border-color 0.2s;
+    }
+
+    .user-switcher:focus-within {
+      border-color: var(--accent);
+    }
+
+    .user-switcher span {
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-right: 2px;
+    }
+
+    .user-switcher input {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      width: 145px;
+      outline: none;
+      padding: 0.35rem 0.25rem;
+    }
+
+    .btn-load-user {
+      background: rgba(56, 189, 248, 0.18);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 7px;
+      padding: 0.38rem 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-load-user:hover {
+      background: var(--accent);
+      color: #090d16;
+    }
+
+    .btn-home-user {
+      display: none;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.55rem 0.9rem;
+      background: rgba(129, 140, 248, 0.15);
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      border-radius: 10px;
+      color: #a5b4fc;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-home-user:hover {
+      background: rgba(129, 140, 248, 0.25);
+      color: #fff;
+    }
+
+    .github-profile-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .github-profile-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    /* Controls Bar */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    @media (min-width: 768px) {
+      .controls {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+      max-width: 420px;
+    }
+
+    .search-wrapper svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 0.7rem 1rem 0.7rem 2.6rem;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      outline: none;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    #searchInput:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 0.55rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--surface-color);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+      background: var(--surface-hover);
+    }
+
+    .tab-btn.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Stats & Status */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .refresh-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .refresh-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* Grid de Apps */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .app-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.25rem;
+      backdrop-filter: blur(12px);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-glow);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(56, 189, 248, 0.12);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .app-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-live.online {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-live.online::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .badge-live.repo-only {
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--text-secondary);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .card-body h3 {
+      font-size: 1.12rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+      word-break: break-word;
+    }
+
+    .card-body p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-secondary);
+      margin-top: 0.75rem;
+    }
+
+    .lang-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.6rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn-open {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #4f46e5);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-code {
+      padding: 0.6rem 0.75rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-code:hover {
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Loading & Empty states */
+    .state-message {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-secondary);
+      background: var(--surface-color);
+      border-radius: var(--card-radius);
+      border: 1px dashed var(--border-color);
+    }
+
+    /* Footer & Animated Signature */
+    footer {
+      text-align: center;
+      padding: 1.75rem 1rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .signature {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, #64748b, #38bdf8, #818cf8, #64748b);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: signatureFlow 6s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes signatureFlow {
+      0%, 100% { background-position: 0% 50%; opacity: 0.75; }
+      50% { background-position: 100% 50%; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="profile-box">
+        <img id="userAvatar" class="avatar" src="https://github.com/Eltonespanha.png" alt="Avatar" />
+        <div class="title-area">
+          <h1 id="headerTitle">Meus Aplicativos & Projetos</h1>
+          <p id="userBio">Hub automático sincronizado com GitHub (@Eltonespanha)</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <form class="user-switcher" id="userSwitcherForm" title="Explorar repositórios de outro usuário do GitHub">
+          <span>@</span>
+          <input type="text" id="usernameInput" placeholder="Outro usuário..." autocomplete="off" />
+          <button type="submit" class="btn-load-user">Explorar</button>
+        </form>
+
+        <button type="button" id="backHomeBtn" class="btn-home-user" title="Voltar para meus repositórios">
+          ← Meu Perfil
+        </button>
+
+        <a id="githubProfileLink" href="https://github.com/Eltonespanha" target="_blank" rel="noopener noreferrer" class="github-profile-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="search-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Filtrar projetos por nome, tecnologia ou descrição..." />
+      </div>
+
+      <div class="filter-tabs" id="filterTabs">
+        <button class="tab-btn active" data-filter="apps">🚀 Apps Online</button>
+        <button class="tab-btn" data-filter="all">📦 Todos os Repositórios</button>
+      </div>
+    </div>
+
+    <div class="status-bar">
+      <span id="counterText">Carregando projetos...</span>
+      <button class="refresh-btn" id="refreshBtn" title="Atualizar lista do GitHub">
+        ↻ Sincronizar agora
+      </button>
+    </div>
+
+    <main class="apps-grid" id="appsGrid">
+      <div class="state-message">Buscando aplicativos no GitHub...</div>
+    </main>
+  </div>
+
+  <footer>
+    <span class="signature">by Elton Ferreira</span>
+  </footer>
+
+  <script>
+    const DEFAULT_USER = 'Eltonespanha';
+    let currentUser = DEFAULT_USER;
+    let allRepos = [];
+    let currentFilter = 'apps';
+
+    const langColors = {
+      JavaScript: '#f1e05a',
+      HTML: '#e34c26',
+      CSS: '#563d7c',
+      Python: '#3572A5',
+      TypeScript: '#3178c6',
+      Dart: '#00B4AB',
+      C: '#555555',
+      'C++': '#f34b7d',
+      Java: '#b07219',
+      Go: '#00ADD8',
+      Rust: '#dea584'
+    };
+
+    function formatTitle(repoName) {
+      return repoName
+        .replace(/[-_]+/g, ' ')
+        .replace(/\b\w/g, char => char.toUpperCase());
+    }
+
+    function getAppUrl(repo, owner) {
+      if (repo.homepage && repo.homepage.trim() !== '') {
+        let url = repo.homepage.trim();
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          url = 'https://' + url;
+        }
+        return url;
+      }
+      if (repo.has_pages) {
+        if (repo.name.toLowerCase() === `${owner.toLowerCase()}.github.io`) {
+          return `https://${owner.toLowerCase()}.github.io/`;
+        }
+        return `https://${owner.toLowerCase()}.github.io/${repo.name}/`;
+      }
+      return null;
+    }
+
+    function pickIcon(repo) {
+      const text = `${repo.name} ${repo.description || ''}`.toLowerCase();
+      if (text.includes('audio') || text.includes('mesa') || text.includes('som')) return '🎚️';
+      if (text.includes('financ') || text.includes('gasto') || text.includes('trade') || text.includes('bolsa') || text.includes('compar')) return '💰';
+      if (text.includes('cozinha') || text.includes('estoque') || text.includes('food')) return '🍳';
+      if (text.includes('stm32') || text.includes('firm') || text.includes('volt') || text.includes('hard')) return '🔌';
+      if (text.includes('bot') || text.includes('auto') || text.includes('scrap')) return '🤖';
+      if (text.includes('loja') || text.includes('shop') || text.includes('comm')) return '🛍️';
+      if (repo.language === 'Python') return '🐍';
+      if (repo.language === 'HTML' || repo.language === 'JavaScript') return '🌐';
+      return '⚡';
+    }
+
+    function setActiveTab(filterName) {
+      currentFilter = filterName;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filterName);
+      });
+    }
+
+    function renderRepos() {
+      const grid = document.getElementById('appsGrid');
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      const filtered = allRepos.filter(repo => {
+        const appUrl = getAppUrl(repo, currentUser);
+        const matchesTab = currentFilter === 'all' ? true : Boolean(appUrl);
+        const matchesSearch =
+          repo.name.toLowerCase().includes(searchTerm) ||
+          (repo.description && repo.description.toLowerCase().includes(searchTerm)) ||
+          (repo.language && repo.language.toLowerCase().includes(searchTerm));
+
+        return matchesTab && matchesSearch;
+      });
+
+      document.getElementById('counterText').textContent =
+        `Exibindo ${filtered.length} ${filtered.length === 1 ? 'projeto' : 'projetos'} de @${currentUser}`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="state-message">
+            <p style="font-size: 1.05rem; margin-bottom: 0.5rem; color: #f8fafc;">Nenhum app encontrado neste filtro para @${currentUser}.</p>
+            <p style="font-size: 0.88rem;">Tente clicar em <strong>"Todos os Repositórios"</strong> ou limpe o campo de busca.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(repo => {
+        const appUrl = getAppUrl(repo, currentUser);
+        const isLive = Boolean(appUrl);
+        const targetUrl = isLive ? appUrl : repo.html_url;
+        const langColor = langColors[repo.language] || '#94a3b8';
+        const updatedDate = new Date(repo.pushed_at).toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        });
+
+        return `
+          <article class="app-card">
+            <div>
+              <div class="card-top">
+                <div class="app-icon">${pickIcon(repo)}</div>
+                <span class="badge-live ${isLive ? 'online' : 'repo-only'}">
+                  ${isLive ? 'App Online' : 'Repositório'}
+                </span>
+              </div>
+
+              <div class="card-body" style="margin-top: 1rem;">
+                <h3>${formatTitle(repo.name)}</h3>
+                <p>${repo.description || `Projeto público de @${currentUser}.`}</p>
+              </div>
+
+              <div class="card-meta">
+                ${repo.language ? `<span><i class="lang-dot" style="background:${langColor}"></i>${repo.language}</span>` : ''}
+                <span>• Atualizado em ${updatedDate}</span>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="btn-open ${isLive ? 'btn-primary' : 'btn-secondary'}">
+                ${isLive ? 'Abrir App ↗' : 'Ver Projeto ↗'}
+              </a>
+              ${isLive ? `
+                <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="btn-code" title="Ver código no GitHub">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                </a>
+              ` : ''}
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    async function fetchGitHubData(username, forceRefresh = false) {
+      currentUser = username.trim() || DEFAULT_USER;
+      const isDefault = currentUser.toLowerCase() === DEFAULT_USER.toLowerCase();
+      const cacheKey = `gh_repos_${currentUser.toLowerCase()}_v1`;
+
+      // Atualiza cabeçalho visual imediatamente
+      document.getElementById('userAvatar').src = `https://github.com/${currentUser}.png`;
+      document.getElementById('githubProfileLink').href = `https://github.com/${currentUser}`;
+      document.getElementById('backHomeBtn').style.display = isDefault ? 'none' : 'inline-flex';
+      document.getElementById('headerTitle').textContent = isDefault
+        ? 'Meus Aplicativos & Projetos'
+        : `Projetos de @${currentUser}`;
+      document.getElementById('userBio').textContent = `Sincronizando com GitHub (@${currentUser})...`;
+      document.getElementById('searchInput').value = '';
+      setActiveTab('apps');
+
+      if (!forceRefresh) {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            allRepos = parsed.repos;
+            document.getElementById('userBio').textContent = parsed.bio || `Repositórios públicos de @${currentUser}`;
+            const hasLive = allRepos.some(r => Boolean(getAppUrl(r, currentUser)));
+            if (!hasLive) setActiveTab('all');
+            renderRepos();
+            return;
+          } catch (e) {}
+        }
+      }
+
+      document.getElementById('appsGrid').innerHTML = `<div class="state-message">Buscando repositórios de <strong>@${currentUser}</strong>...</div>`;
+      document.getElementById('counterText').textContent = 'Consultando API do GitHub...';
+
+      try {
+        const [userRes, reposRes] = await Promise.all([
+          fetch(`https://api.github.com/users/${currentUser}`),
+          fetch(`https://api.github.com/users/${currentUser}/repos?per_page=100&sort=pushed`)
+        ]);
+
+        if (userRes.status === 404 || reposRes.status === 404) {
+          throw new Error(`Usuário "@${currentUser}" não encontrado no GitHub.`);
+        }
+
+        if (!reposRes.ok) {
+          throw new Error('Limite de consultas da API do GitHub atingido. Tente novamente em alguns minutos.');
+        }
+
+        const userData = userRes.ok ? await userRes.json() : null;
+        const reposData = await reposRes.json();
+
+        allRepos = reposData
+          .filter(r => !r.fork)
+          .sort((a, b) => {
+            const aLive = getAppUrl(a, currentUser) ? 1 : 0;
+            const bLive = getAppUrl(b, currentUser) ? 1 : 0;
+            if (bLive !== aLive) return bLive - aLive;
+            return new Date(b.pushed_at) - new Date(a.pushed_at);
+          });
+
+        const displayName = userData?.name ? `${userData.name} (@${currentUser})` : `@${currentUser}`;
+        if (!isDefault) {
+          document.getElementById('headerTitle').textContent = `Projetos de ${displayName}`;
+        }
+        document.getElementById('userBio').textContent = userData?.bio || `Hub automático sincronizado com GitHub (@${currentUser})`;
+
+        localStorage.setItem(cacheKey, JSON.stringify({
+          bio: userData?.bio || null,
+          repos: allRepos,
+          timestamp: Date.now()
+        }));
+
+        const hasAnyLiveApp = allRepos.some(r => Boolean(getAppUrl(r, currentUser)));
+        if (!hasAnyLiveApp) {
+          setActiveTab('all');
+        }
+
+        renderRepos();
+      } catch (error) {
+        allRepos = [];
+        document.getElementById('counterText').textContent = 'Erro na busca';
+        document.getElementById('userBio').textContent = `Não foi possível carregar @${currentUser}`;
+        document.getElementById('appsGrid').innerHTML = `
+          <div class="state-message">
+            <p style="color: #f87171; font-weight: 600; margin-bottom: 0.4rem;">${error.message}</p>
+            <p style="font-size: 0.88rem;">Verifique se o nome de usuário foi digitado corretamente.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Event Listeners
+    document.getElementById('userSwitcherForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const targetUser = document.getElementById('usernameInput').value.trim();
+      if (targetUser) {
+        fetchGitHubData(targetUser);
+      }
+    });
+
+    document.getElementById('backHomeBtn').addEventListener('click', () => {
+      document.getElementById('usernameInput').value = '';
+      fetchGitHubData(DEFAULT_USER);
+    });
+
+    document.getElementById('searchInput').addEventListener('input', renderRepos);
+
+    document.getElementById('filterTabs').addEventListener('click', (e) => {
+      if (e.target.classList.contains('tab-btn')) {
+        setActiveTab(e.target.dataset.filter);
+        renderRepos();
+      }
+    });
+
+    document.getElementById('refreshBtn').addEventListener('click', () => fetchGitHubData(currentUser, true));
+
+    // Inicializa com o seu usuário
+    fetchGitHubData(DEFAULT_USER);
+  </script>
+</body>
+</html>
